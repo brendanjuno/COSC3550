@@ -31,14 +31,15 @@ public class DustGame extends Application{
     String appName = "Call of Dusty: Modern Roomba 2";
     Image carpet = new Image("Carpet.jpg");
     final int WIDTH = 500;
-    final int HEIGHT = 500;
+    final int HEIGHT = 600;
     final int FPS = 30;
     ArrayList<Dust> dustbunnies = new ArrayList<>();
     Roomba roomba = new Roomba();
     Random random = new Random();
     ROOMBA_STATE state = ROOMBA_STATE.LEFT;
     private enum ROOMBA_STATE {LEFT,RIGHT,IDLE}
-    int killcount = 0;
+    double killcount = 0;
+    double frames = 0;
 
 
 
@@ -108,7 +109,14 @@ public class DustGame extends Application{
         gc.setFill(new ImagePattern(carpet));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
         gc.setFill(Color.WHITE);
+        gc.fillRect(0,500,500,200);
+        gc.setLineWidth(10);
+
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0,500,500,200);
         gc.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        frames++;
+        killcount = frames/30;
         gc.fillText("Kill Count: "+killcount,30,30);
         for (Dust e : dustbunnies){
             e.render(gc);
