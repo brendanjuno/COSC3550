@@ -9,7 +9,12 @@ import javafx.scene.canvas.Canvas;
 import javafx.scene.canvas.GraphicsContext;
 import javafx.scene.image.Image;
 import javafx.scene.input.KeyEvent;
+import javafx.scene.paint.Color;
 import javafx.scene.paint.ImagePattern;
+import javafx.scene.text.Font;
+import javafx.scene.text.FontPosture;
+import javafx.scene.text.FontWeight;
+import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
@@ -17,7 +22,7 @@ import java.util.ArrayList;
 import java.util.Random;
 
 /**
- * @author Brendan Juno and Jason W.
+ * @author Brendan Juno and Jason Wallenfang.
  * @version 2/5/2018
  *          Project: ComputerGames
  *          Comments:
@@ -29,9 +34,12 @@ public class DustGame extends Application{
     final int HEIGHT = 500;
     final int FPS = 30;
     ArrayList<Dust> dustbunnies = new ArrayList<>();
+    Roomba roomba = new Roomba();
     Random random = new Random();
     ROOMBA_STATE state = ROOMBA_STATE.LEFT;
-    private enum ROOMBA_STATE {LEFT,RIGHT,IDLE};
+    private enum ROOMBA_STATE {LEFT,RIGHT,IDLE}
+    int killcount = 0;
+
 
 
 
@@ -99,10 +107,13 @@ public class DustGame extends Application{
     void render(GraphicsContext gc){
         gc.setFill(new ImagePattern(carpet));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
-
+        gc.setFill(Color.WHITE);
+        gc.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        gc.fillText("Kill Count: "+killcount,30,30);
         for (Dust e : dustbunnies){
             e.render(gc);
         }
+        roomba.render(gc);
     }
 
     void update(){
@@ -110,5 +121,6 @@ public class DustGame extends Application{
             e.x+=e.vx;
             e.y+=e.vy;
         }
+        roomba.move();
     }
 }
