@@ -18,6 +18,8 @@ import javafx.scene.text.Text;
 import javafx.stage.Stage;
 import javafx.util.Duration;
 
+import java.text.DecimalFormat;
+import java.text.NumberFormat;
 import java.util.ArrayList;
 import java.util.Random;
 
@@ -108,20 +110,22 @@ public class DustGame extends Application{
     void render(GraphicsContext gc){
         gc.setFill(new ImagePattern(carpet));
         gc.fillRect(0, 0, WIDTH, HEIGHT);
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0,500,500,200);
-        gc.setLineWidth(10);
-
-        gc.setFill(Color.WHITE);
-        gc.fillRect(0,500,500,200);
-        gc.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
-        frames++;
-        killcount = frames/30;
-        gc.fillText("Kill Count: "+killcount,30,30);
         for (Dust e : dustbunnies){
             e.render(gc);
         }
         roomba.render(gc);
+
+        //Scoreboard Rendering
+        gc.setFill(Color.WHITE);
+        gc.fillRect(0,500,500,200);
+        gc.setFont(Font.font("verdana", FontWeight.BOLD, FontPosture.REGULAR, 20));
+        frames++;
+        NumberFormat nf = NumberFormat.getInstance();
+        nf.setMaximumFractionDigits(1);
+        nf.setGroupingUsed(false);
+        gc.setFill(Color.BLACK);
+        gc.fillText("Time: "+nf.format(frames/30),20,530);
+        //
     }
 
     void update(){
