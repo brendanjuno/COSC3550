@@ -127,7 +127,6 @@ public class DustGame extends Application{
         gc.fillText("Time: "+nf.format(frames/FPS),20,530);
         gc.fillText("Score: "+killcount,20,550);
         gc.fillText("Bunnies Remaining: "+dustbunnies.size(),20,570);
-        //
     }
 
     void update(){
