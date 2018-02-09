@@ -15,7 +15,7 @@ public class Roomba {
     int y = 200;
     int size = 100;
     double speed = 3;
-    double dir_angle = 180;
+    double dir_angle = 0;
     double vx = speed * Math.cos(dir_angle);
     double vy = speed * Math.sin(dir_angle);
     Image roomba = new Image("room.png");
