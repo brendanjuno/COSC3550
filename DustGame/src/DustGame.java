@@ -38,9 +38,9 @@ public class DustGame extends Application{
     ArrayList<Dust> dustbunnies = new ArrayList<>();
     Roomba roomba = new Roomba();
     Random random = new Random();
-    ROOMBA_STATE state = ROOMBA_STATE.LEFT;
+    ROOMBA_STATE state = ROOMBA_STATE.IDLE;
     private enum ROOMBA_STATE {LEFT,RIGHT,IDLE}
-    double killcount = 0;
+    int killcount = 0;
     double frames = 0;
 
 
@@ -124,14 +124,31 @@ public class DustGame extends Application{
         nf.setMaximumFractionDigits(1);
         nf.setGroupingUsed(false);
         gc.setFill(Color.BLACK);
-        gc.fillText("Time: "+nf.format(frames/30),20,530);
+        gc.fillText("Time: "+nf.format(frames/FPS),20,530);
+        gc.fillText("Score: "+killcount,20,550);
+        gc.fillText("Bunnies Remaining: "+dustbunnies.size(),20,570);
         //
     }
 
     void update(){
-        for (Dust e: dustbunnies) {
-            e.x+=e.vx;
-            e.y+=e.vy;
+        for (int i = 0; i<dustbunnies.size();i++) {
+            dustbunnies.get(i).move();
+            System.out.println(roomba.cx);
+            if (((Math.pow(dustbunnies.get(i).cx-roomba.cx,2))+(Math.pow(roomba.cy-dustbunnies.get(i).cy,2)))<=(Math.pow((roomba.size/2)+(dustbunnies.get(i).size/2),2))){
+                System.out.println("Collision");
+                killcount+=100;
+                dustbunnies.remove(i);
+
+            }
+
+        }
+        switch (state){
+            case LEFT:
+                roomba.dir_angle = roomba.dir_angle-0.1;
+                break;
+            case RIGHT:
+                roomba.dir_angle = roomba.dir_angle+0.1;
+                break;
         }
         roomba.move();
     }

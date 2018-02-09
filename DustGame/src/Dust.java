@@ -15,6 +15,8 @@ public class Dust {
     int size = 20;
     int vx;
     int vy;
+    int cx = x+(size/2);
+    int cy = y+(size/2);
     Random random = new Random();
     public Dust(){
         x = random.nextInt(500);
@@ -44,6 +46,13 @@ public class Dust {
         if (x>=500){
             x = 5;
         }
+    }
+
+    void move(){
+        x+=vx;
+        y+=vy;
+        cx = x+(size/2);
+        cy = y+(size/2);
     }
 
 }
