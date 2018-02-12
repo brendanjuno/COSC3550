@@ -5,11 +5,14 @@ import javafx.scene.paint.ImagePattern;
 import javafx.scene.transform.Affine;
 
 /**
- * @author Brendan Juno
- * @version 2/7/2018
- *          Project: COSC3550
- *          Comments:
- */
+ * @author Brendan Juno and Jason Wallenfang.
+ * @version 2/5/2018
+ *          Project: COSC3550 - Assignment 3
+ *          Comments: This is the Roomba class which contains all information releated to the Roomba (player).
+ *          Control is done in the DustGame class.
+ *
+ **/
+
 public class Roomba {
     int x = 200;
     int y = 200;

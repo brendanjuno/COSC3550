@@ -4,11 +4,13 @@ import javafx.scene.paint.Color;
 import java.util.Random;
 
 /**
- * @author Brendan Juno
+ * @author Brendan Juno and Jason Wallenfang.
  * @version 2/5/2018
- *          Project: ComputerGames
- *          Comments: Testing Git
- */
+ *          Project: COSC3550 - Assignment 3
+ *          Comments: Dust Object
+ *
+ **/
+
 public class Dust {
     int x;
     int y;

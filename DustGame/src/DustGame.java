@@ -24,8 +24,19 @@ import java.util.Random;
 /**
  * @author Brendan Juno and Jason Wallenfang.
  * @version 2/5/2018
- *          Project: ComputerGames
- *          Comments:
+ *          Project: COSC3550 - Assignment 3
+ *          Comments: Take control of the Roomba and attempt to defeat multiple waves of dustbunnies while avoiding the cats who will drain your battery!
+ *          Pick up powerups along the way to make your Roomba stronger and try to get the highscore! But be careful, if your battery runs out it is GAME OVER!
+ *          Suck up the dust by driving the Roomba over them, once sucked a marker will indicate that they are destroyed!
+ *
+ *          Powerups are:
+ *              Bomb - Destroy all of the visible dust bunnies and start the next wave.
+ *              Speed Boost - Temporarily increase the speed of the Roomba by increasing its power! Be careful, the machine may act strange as it is not designed to operate at these speeds.
+ *          Controls are:
+ *              LEFT and RIGHT - Control the direction of the Roomba!
+ *
+ *
+ *         This is the main game code.
  */
 public class DustGame extends Application{
 
@@ -58,6 +69,7 @@ public class DustGame extends Application{
     boolean speedhit = false;
     boolean cathit = false;
     boolean gameend = false;
+    boolean showhit = false;
 
     String[] lives = {"dead.png", "low.png", "medium.png", "full.png"};
 
@@ -181,6 +193,13 @@ public class DustGame extends Application{
             }
         }
 
+        //Hit Marker Rendering
+        if (showhit){
+            showhit = false;
+            gc.setFill(new ImagePattern(new Image("hitmarker.png")));
+            gc.fillRect(roomba.x+25,roomba.y+25,50,50);
+        }
+
         //Scoreboard Rendering
         gc.setFill(Color.WHITE);
         gc.fillRect(0,500,500,200);
@@ -225,6 +244,7 @@ public class DustGame extends Application{
             dustbunnies.get(i).move();
             if (((Math.pow(dustbunnies.get(i).cx-roomba.cx,2))+(Math.pow(roomba.cy-dustbunnies.get(i).cy,2)))<=(Math.pow((roomba.size/2)+(dustbunnies.get(i).size/2),2))){
                 score +=100;
+                showhit = true;
                 dustbunnies.remove(i);
 
             }
