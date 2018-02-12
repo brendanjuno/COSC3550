@@ -14,6 +14,7 @@ public class Roomba {
     int x = 200;
     int y = 200;
     int size = 100;
+    int battery = 3;
     double speed = 3;
     double dir_angle = 0;
     double vx = speed * Math.cos(dir_angle);

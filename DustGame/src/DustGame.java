@@ -30,6 +30,7 @@ import java.util.Random;
  *          Comments:
  */
 public class DustGame extends Application{
+
     String appName = "Call of Dusty: Modern Roomba 2";
     Image carpet = new Image("Carpet.jpg");
     final int WIDTH = 500;
@@ -45,13 +46,19 @@ public class DustGame extends Application{
     int size;
     int wave = 1;
     Bomb bomb;
+    Speed boost;
+    Cat cat;
     int bombduration = 300;
+    int speedduration = 300;
+    int boostduration = 200;
     int explosionduration = 90;
+    int catduration = 500;
     boolean bombhit = false;
     boolean nextwave = false;
+    boolean speedhit = false;
+    boolean cathit = false;
 
-
-
+    String[] lives = {"dead.png", "low.png", "medium.png", "full.png"};
 
     public static void main(String[] args) {
         launch(args);
@@ -135,6 +142,13 @@ public class DustGame extends Application{
         gc.fillText("Score: "+killcount,20,545);
         gc.fillText("Bunnies Remaining: "+dustbunnies.size(),20,565);
         gc.fillText("Wave: "+wave,20,585);
+        gc.fillText("Battery: " + roomba.battery, 375, 517);
+        gc.setFill(new ImagePattern(new Image(lives[roomba.battery])));
+        gc.fillRect(400, 520, 25, 75);
+        if(roomba.battery == 0){
+            System.exit(0);
+        }
+
 
         //Bomb render
         if(bomb!=null){
@@ -151,6 +165,39 @@ public class DustGame extends Application{
                     bombhit = false;
                     explosionduration = 90;
                     nextwave = false;
+                }
+            }
+        }
+
+        //Speed render
+        if(boost!=null){
+            boost.render(gc);
+            if(speedhit == true){
+                if(boostduration > 0){
+                    gc.setFill(new ImagePattern(new Image("boost.png")));
+                    gc.fillRect(boost.x-25, boost.y-25, 100, 100);
+                    boostduration--;
+                }
+                else{
+                    boost = null;
+                    speedduration = 300;
+                    speedhit = false;
+                    boostduration = 200;
+                }
+            }
+        }
+
+        //Cat(enemy) render
+        if(cat!=null){
+            cat.render(gc);
+            if(cathit == true){
+                if(catduration > 0){
+                    catduration--;
+                }
+                else{
+                    cat = null;
+                    catduration = 500;
+                    cathit = false;
                 }
             }
         }
@@ -215,6 +262,57 @@ public class DustGame extends Application{
             }
         }
 
+        //Speed powerup
+        if(boost==null) {
+            if (3 == (random.nextInt(300))) {
+                System.out.println("Boost Spawned");
+                boost = new Speed();
+            }
+        }
+        else {
+            if (speedduration < 0) {
+                boost = null;
+                speedduration = 300;
+            } else {
+                speedduration--;
+                int sx = boost.x + (boost.size/2);
+                int sy = boost.y + (boost.size/2);
+                if(((Math.pow(sx-roomba.cx,2)) + (Math.pow(roomba.cy - sy,2))) <= (Math.pow((roomba.size/2) + (boost.size/2),2))) {
+                    boostduration = 200;
+                    roomba.speed = 5;
+                    System.out.println("SPEED BOOST!" + roomba.speed);
+                    speedhit = true;
+                }
+                boostduration--;
+                if(boostduration<=0){
+                    roomba.speed = 3;
+                }
+            }
+        }
 
+        //Cat enemy
+        if(cat == null){
+            if(1 == (random.nextInt(200))){
+                System.out.println("Cat Spawned");
+                cat = new Cat();
+            }
+        }
+        else{
+            if(catduration < 0){
+                cat = null;
+                catduration = 500;
+            }
+            else{
+                catduration--;
+                int ex = cat.x + (cat.size/2);
+                int ey = cat.y + (cat.size/2);
+                if(((Math.pow(ex-roomba.cx, 2)) + (Math.pow(roomba.cy-ey, 2))) <= (Math.pow((roomba.size/2) + (cat.size/2),2))){
+                    System.out.println("A cat drained your battery!");
+                    cathit = true;
+                    cat = null;
+                    roomba.battery--;
+                }
+            }
+        }
     }
 }
